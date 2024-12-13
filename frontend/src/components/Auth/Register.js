@@ -1,18 +1,22 @@
 import React, { useState } from 'react';
 import { registerUser } from '../../services/api';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const Register = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             await registerUser(name, email, password);
-            // Redirect or show success message
+            toast.success('Registration successful! Please login.');
+            navigate('/login');
         } catch (error) {
-            console.error('Registration failed:', error);
+            toast.error(error.response?.data?.message || 'Registration failed. Please try again.');
         }
     };
 
@@ -45,7 +49,7 @@ const Register = () => {
                     required
                 />
                 <button type="submit" className="bg-blue-600 text-white p-2 rounded w-full hover:bg-blue-700 transition duration-300">Register</button>
-                <p className="mt-4 text-center">
+                <p className="mt-4 text-center text-white">
                     <input type="checkbox" required /> I agree to the terms and conditions
                 </p>
             </form>

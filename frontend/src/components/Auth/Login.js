@@ -1,19 +1,22 @@
 import React, { useState } from 'react';
 import { loginUser } from '../../services/api';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             const data = await loginUser(email, password);
-            // Save token to local storage or context
             localStorage.setItem('userToken', data.token);
-            // Redirect or update state as needed
+            toast.success('Login successful!');
+            navigate('/profile');
         } catch (error) {
-            console.error('Login failed:', error);
+            toast.error(error.response?.data?.message || 'Login failed. Please check your credentials.');
         }
     };
 
@@ -38,7 +41,7 @@ const Login = () => {
                     required
                 />
                 <button type="submit" className="bg-blue-600 text-white p-2 rounded w-full hover:bg-blue-700 transition duration-300">Login</button>
-                <p className="mt-4 text-center">
+                <p className="mt-4 text-center text-white">
                     <a href="#" className="text-blue-500">Forgot Password?</a>
                 </p>
             </form>

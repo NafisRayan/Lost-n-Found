@@ -3,9 +3,16 @@ const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-// User Registration
+// controllers/userController.js
 const registerUser = async (req, res) => {
+    console.log('Received registration data:', req.body); // Log the incoming request body
     const { name, email, password } = req.body;
+
+    // Validate input
+    if (!name || !email || !password) {
+        return res.status(400).json({ message: 'All fields are required' });
+    }
+
     const userExists = await User.findOne({ email });
 
     if (userExists) {
@@ -25,6 +32,7 @@ const registerUser = async (req, res) => {
 const loginUser = async (req, res) => {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
+    console.log('Received registration data:', req.body);
 
     if (user && (await bcrypt.compare(password, user.password))) {
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '30d' });
