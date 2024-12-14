@@ -8,7 +8,7 @@ const cors = require('cors');
 dotenv.config();
 
 // Connect to MongoDB Atlas
-mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(process.env.MONGODB_URI)
     .then(() => console.log('MongoDB connected'))
     .catch(err => console.error(err));
 
@@ -19,10 +19,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// server.js (add this at the top)
+// Routes
 const userRoutes = require('./routes/userRoutes');
-
-// Add this line before starting the server
 app.use('/api/users', userRoutes);
 
 // Port configuration

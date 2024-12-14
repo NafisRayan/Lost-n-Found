@@ -33,12 +33,11 @@ const registerUser = async (req, res) => {
 const loginUser = async (req, res) => {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
-    console.log('Received registration data:', req.body);
 
     if (user && (await bcrypt.compare(password, user.password))) {
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '30d' });
         
-        // Log the login activity
+        // Log the login activity with current timestamp
         await ActivityLog.create({
             userId: user._id,
             username: user.name,
@@ -58,7 +57,7 @@ const logoutUser = async (req, res) => {
     try {
         const user = await User.findById(req.user.id);
         
-        // Log the logout activity
+        // Log the logout activity with current timestamp
         await ActivityLog.create({
             userId: user._id,
             username: user.name,
@@ -69,6 +68,7 @@ const logoutUser = async (req, res) => {
 
         res.json({ message: 'Logged out successfully' });
     } catch (error) {
+        console.error('Logout error:', error);
         res.status(500).json({ message: 'Error logging out' });
     }
 };
@@ -78,7 +78,7 @@ const getUserProfile = async (req, res) => {
     try {
         const user = await User.findById(req.user.id).select('-password');
         
-        // Get last login and logout
+        // Get last login and logout, sorted by timestamp in descending order
         const lastLogin = await ActivityLog.findOne({ 
             userId: user._id, 
             action: 'login' 
@@ -101,6 +101,7 @@ const getUserProfile = async (req, res) => {
             res.status(404).json({ message: 'User not found' });
         }
     } catch (error) {
+        console.error('Profile error:', error);
         res.status(500).json({ message: 'Error fetching user profile' });
     }
 };

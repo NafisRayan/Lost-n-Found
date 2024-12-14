@@ -17,27 +17,33 @@ const Profile = () => {
             month: '2-digit',
             day: '2-digit',
             hour: '2-digit',
-            minute: '2-digit'
+            minute: '2-digit',
+            hour12: true
         });
     };
 
-    useEffect(() => {
-        const fetchUserProfile = async () => {
-            const token = localStorage.getItem('userToken');
-            if (!token) {
-                toast.error('You need to log in first.');
+    const fetchUserProfile = async () => {
+        const token = localStorage.getItem('userToken');
+        if (!token) {
+            toast.error('You need to log in first.');
+            navigate('/login');
+            return;
+        }
+        try {
+            const data = await getUserProfile(token);
+            setUser(data);
+        } catch (error) {
+            toast.error(error.response?.data?.message || 'Failed to fetch user profile.');
+            if (error.response?.status === 401) {
+                localStorage.removeItem('userToken');
                 navigate('/login');
-                return;
             }
-            try {
-                const data = await getUserProfile(token);
-                setUser(data);
-            } catch (error) {
-                toast.error(error.response?.data?.message || 'Failed to fetch user profile.');
-            } finally {
-                setLoading(false);
-            }
-        };
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
         fetchUserProfile();
     }, [navigate]);
 
@@ -51,7 +57,13 @@ const Profile = () => {
                 navigate('/login');
             }
         } catch (error) {
+            console.error('Logout error:', error);
             toast.error(error.response?.data?.message || 'Error logging out');
+            // If there's an authentication error, redirect to login
+            if (error.response?.status === 401) {
+                localStorage.removeItem('userToken');
+                navigate('/login');
+            }
         }
     };
 
@@ -66,18 +78,19 @@ const Profile = () => {
                         <h2 className="text-xl font-semibold">Profile Information</h2>
                         <p>Name: {user.name}</p>
                         <p>Email: {user.email}</p>
-                        <button className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded mt-4 transition duration-300">
+                        {/* <button className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded mt-4 transition duration-300">
                             Edit Profile
-                        </button>
-                    </div>
-                ) : (
-                    <p>No user data available.</p>
-                )}
-                <h2 className="text-xl font-semibold mt-6">Activity Logs</h2>
+                        </button> */}
+                        <h2 className="text-xl font-semibold mt-6">Activity Logs</h2>
                 <ul className="list-disc pl-5 mt-2">
                     <li>Last Logged in on {formatDate(user?.lastLogin)}</li>
                     <li>Last Logged out on {formatDate(user?.lastLogout)}</li>
                 </ul>
+                    </div>
+                ) : (
+                    <p>No user data available.</p>
+                )}
+                
                 <button 
                     onClick={handleLogout} 
                     className="bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded mt-4 transition duration-300"
