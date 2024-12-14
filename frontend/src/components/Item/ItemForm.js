@@ -1,13 +1,66 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { addItem, getUserProfile } from '../../services/api'; // Import the functions
 
 const ItemForm = () => {
     const [itemName, setItemName] = useState('');
     const [category, setCategory] = useState('');
     const [image, setImage] = useState(null);
+    const [status, setStatus] = useState('');
+    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
+
+    useEffect(() => {
+        const fetchUserProfile = async () => {
+            const token = localStorage.getItem('userToken'); // Fetch token
+            console.log('Token:', token); // Log the token
+            if (token) {
+                try {
+                    const profile = await getUserProfile(token);
+                    console.log('Profile Data:', profile); // Log the profile data
+                    setUsername(profile.name);
+                    setEmail(profile.email);
+                } catch (error) {
+                    console.error('Error fetching user profile:', error);
+                }
+            }
+        };
+        fetchUserProfile();
+    }, []);
+
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            // Check the file size (limit to 2MB for example)
+            if (file.size > 2 * 1024 * 1024) {
+                alert('File size exceeds 2MB');
+                return;
+            }
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setImage(reader.result); // Set the base64 string
+            };
+            reader.readAsDataURL(file); // Convert to base64
+        }
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Handle item submission logic here
+        const itemData = {
+            name: itemName,
+            category,
+            imageUrl: image,
+            status,
+            username,
+            email,
+        };
+        console.log('Item Data:', itemData); // Log item data before submission
+        addItem(itemData)
+            .then((data) => {
+                console.log('Item added:', data);
+            })
+            .catch((error) => {
+                console.error('Error adding item:', error);
+            });
     };
 
     return (
@@ -27,15 +80,24 @@ const ItemForm = () => {
                     placeholder="Category"
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
-                    className="border p-2 mb-4 w-full bg-gray-700 text-white"
-                    required
+                    className="mb-4 p-2 rounded bg-gray-700 text-white"
                 />
                 <input
                     type="file"
-                    onChange={(e) => setImage(e.target.files[0])}
-                    className="border p-2 mb-4 w-full bg-gray-700 text-white"
+                    onChange={handleImageChange}
+                    className="mb-4"
                 />
-                <button type="submit" className="bg-blue-600 text-white p-2 rounded w-full hover:bg-blue-700 transition duration-300">Submit</button>
+                <select className="mb-4 bg-gray-700 text-white" onChange={(e) => setStatus(e.target.value)}>
+                    <option value="">Select Status</option>
+                    <option value="available">Available</option>
+                    <option value="claimed">Claimed</option>
+                </select>
+                <button
+                    type="submit"
+                    className="bg-blue-500 text-white p-2 rounded"
+                >
+                    Submit
+                </button>
             </form>
         </div>
     );
