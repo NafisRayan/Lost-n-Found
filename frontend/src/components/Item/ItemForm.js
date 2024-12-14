@@ -26,6 +26,17 @@ const ItemForm = () => {
             });
     };
 
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setImage(reader.result); // Set the base64 string
+            };
+            reader.readAsDataURL(file); // Convert to base64
+        }
+    };
+
     return (
         <div className="flex justify-center items-center h-screen bg-gray-900">
             <form onSubmit={handleSubmit} className="bg-gray-800 p-6 rounded shadow-md w-96">
@@ -47,7 +58,7 @@ const ItemForm = () => {
                 />
                 <input
                     type="file"
-                    onChange={(e) => setImage(e.target.files[0])}
+                    onChange={handleImageChange}
                     className="mb-4"
                 />
                 <select className="mb-4 bg-gray-700 text-white" onChange={(e) => setStatus(e.target.value)}>

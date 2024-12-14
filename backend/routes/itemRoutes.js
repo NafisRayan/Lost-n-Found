@@ -1,15 +1,20 @@
 const express = require('express');
 const router = express.Router();
+const Item = require('../models/Item'); // Import the Item model
 
 let items = []; // In-memory storage for items
 
 // Create a new item
-router.post('/items', (req, res) => {
+router.post('/items', async (req, res) => {
     console.log('Request body:', req.body); // Log the incoming request body
     const { name, category, imageUrl, status } = req.body;
-    const newItem = { id: items.length + 1, name, category, imageUrl, status };
-    items.push(newItem);
-    res.status(201).json(newItem);
+    try {
+        const newItem = await Item.create({ name, category, imageUrl, status });
+        res.status(201).json(newItem);
+    } catch (error) {
+        console.error('Error saving item:', error);
+        res.status(500).json({ message: 'Error saving item' });
+    }
 });
 
 // Get all items
