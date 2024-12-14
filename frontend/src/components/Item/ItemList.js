@@ -90,9 +90,9 @@ const ItemList = () => {
 
     return (
         <div className="p-8 bg-gray-900 text-white min-h-screen">
-            <h2 className="text-3xl font-bold mb-4 text-center">Items</h2>
+            {/* <h2 className="text-3xl font-bold mb-4 text-center">Items</h2> */}
             
-            <div className="flex flex-wrap mb-8 gap-8">
+            <div className="flex flex-wrap mb-8 gap-8 text-black">
                 <input
                     type="text"
                     placeholder="Search by Name, Category, or Location..."
