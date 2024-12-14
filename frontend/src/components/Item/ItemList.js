@@ -25,6 +25,10 @@ const ItemList = () => {
                         <h3 className="text-xl font-semibold">{item.name}</h3>
                         <p>Category: {item.category}</p>
                         <p>Status: {item.status}</p>
+                        <p>Username: {item.username}</p>
+                        <p>Email: {item.email}</p>
+                        <p>Location: {item.location}</p>
+                        <p>Timestamp: {new Date(item.timestamp).toLocaleString()}</p>
                         <img src={item.imageUrl} alt={item.name} className="w-32 h-32 object-cover" />
                     </li>
                 ))}
