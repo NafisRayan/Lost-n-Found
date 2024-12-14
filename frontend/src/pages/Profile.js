@@ -70,7 +70,7 @@ const Profile = () => {
     if (loading) return <div>Loading...</div>;
 
     return (
-        <div className="bg-gray-900 text-white min-h-screen">
+        <div className="bg-black text-white min-h-screen">
             <div className="p-8">
                 <h1 className="text-3xl font-bold mb-4">User Profile</h1>
                 {user ? (

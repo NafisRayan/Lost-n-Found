@@ -89,7 +89,7 @@ const ItemList = () => {
     }, [filterItems]);
 
     return (
-        <div className="p-8 bg-gray-900 text-white min-h-screen">
+        <div className="p-8 bg-black-900 text-white min-h-screen">
             {/* <h2 className="text-3xl font-bold mb-4 text-center">Items</h2> */}
             
             <div className="flex flex-wrap mb-8 gap-8 text-black">
@@ -134,7 +134,7 @@ const ItemList = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredItems.map((item) => (
-                <div key={item._id} className="bg-gray-900 rounded-lg shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-105 hover:shadow-lg hover:z-10">
+                <div key={item._id} className="bg-black rounded-lg shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-105 hover:shadow-lg hover:z-10">
                     <img src={item.imageUrl} alt={item.name} className="w-full h-48 object-cover transition duration-200 hover:scale-110" />
                     <div className="p-4 transition duration-200">
                         <h3 className="text-lg font-semibold text-white-800">{item.name}</h3>

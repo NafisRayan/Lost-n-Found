@@ -68,7 +68,7 @@ const ItemForm = () => {
     };
 
     return (
-        <div className="flex justify-center items-center h-screen bg-gray-900">
+        <div className="flex justify-center items-center h-screen bg-black">
             <form onSubmit={handleSubmit} className="bg-gray-800 p-6 rounded shadow-md w-96">
                 <h2 className="text-2xl font-bold mb-4 text-white">Register Item</h2>
                 <input
