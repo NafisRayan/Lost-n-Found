@@ -19,16 +19,16 @@ const ItemList = () => {
     return (
         <div className="p-8 bg-gray-900 text-white min-h-screen">
             <h2 className="text-3xl font-bold mb-4 text-center">Items</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <ul>
                 {items.map(item => (
-                    <div key={item.id} className="bg-gray-800 p-4 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
-                        <h3 className="font-semibold">{item.name}</h3>
+                    <li key={item._id} className="border-b border-gray-600 py-4">
+                        <h3 className="text-xl font-semibold">{item.name}</h3>
                         <p>Category: {item.category}</p>
-                        <button className="bg-blue-600 hover:bg-blue-700 text-white py-1 px-2 rounded mt-2 transition duration-300">Edit</button>
-                        <button className="bg-red-600 hover:bg-red-700 text-white py-1 px-2 rounded mt-2 transition duration-300">Delete</button>
-                    </div>
+                        <p>Status: {item.status}</p>
+                        <img src={item.imageUrl} alt={item.name} className="w-32 h-32 object-cover" />
+                    </li>
                 ))}
-            </div>
+            </ul>
         </div>
     );
 };
