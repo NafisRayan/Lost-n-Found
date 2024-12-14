@@ -132,20 +132,20 @@ const ItemList = () => {
                 />
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 item-list">
-              {filteredItems.map(item => (
-                <div className="item-card" key={item._id}>
-                  <img src={item.imageUrl} alt={item.name} className="item-image" />
-                  <div className="item-details">
-                    <h3 className="item-title">{item.name}</h3>
-                    <p className="item-description">Category: {item.category}</p>
-                    <p className="item-description">Status: {item.status}</p>
-                    <p className="item-description">Username: {item.username}</p>
-                    <p className="item-description">Email: {item.email}</p>
-                    <p className="item-description">Location: {item.location}</p>
-                    <p className="item-description">Timestamp: {new Date(item.timestamp).toLocaleString()}</p>
-                    <button className="item-button">View Details</button>
-                  </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredItems.map((item) => (
+                <div key={item._id} className="bg-gray-900 rounded-lg shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-105 hover:shadow-lg hover:z-10">
+                    <img src={item.imageUrl} alt={item.name} className="w-full h-48 object-cover transition duration-200 hover:scale-110" />
+                    <div className="p-4 transition duration-200">
+                        <h3 className="text-lg font-semibold text-white-800">{item.name}</h3>
+                        <p>Category: {item.category}</p>
+                        <p>Status: {item.status}</p>
+                        <p>Username: {item.username}</p>
+                        <p>Email: {item.email}</p>
+                        <p>Location: {item.location}</p>
+                        <p>Timestamp: {new Date(item.timestamp).toLocaleString()}</p>
+                        <button className="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-200">View Details</button>
+                    </div>
                 </div>
               ))}
             </div>
