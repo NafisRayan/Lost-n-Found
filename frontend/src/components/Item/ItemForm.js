@@ -1,13 +1,29 @@
 import React, { useState } from 'react';
+import { addItem } from '../../services/api'; // Import the addItem function
 
 const ItemForm = () => {
     const [itemName, setItemName] = useState('');
     const [category, setCategory] = useState('');
     const [image, setImage] = useState(null);
+    const [status, setStatus] = useState('');
 
     const handleSubmit = (e) => {
         e.preventDefault();
         // Handle item submission logic here
+        const itemData = {
+            name: itemName,
+            category,
+            image,
+            status
+        };
+        addItem(itemData)
+            .then((data) => {
+                console.log('Item added:', data);
+                // Optionally reset form fields or show success message
+            })
+            .catch((error) => {
+                console.error('Error adding item:', error);
+            });
     };
 
     return (
@@ -27,15 +43,24 @@ const ItemForm = () => {
                     placeholder="Category"
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
-                    className="border p-2 mb-4 w-full bg-gray-700 text-white"
-                    required
+                    className="mb-4 p-2 rounded bg-gray-700 text-white"
                 />
                 <input
                     type="file"
                     onChange={(e) => setImage(e.target.files[0])}
-                    className="border p-2 mb-4 w-full bg-gray-700 text-white"
+                    className="mb-4"
                 />
-                <button type="submit" className="bg-blue-600 text-white p-2 rounded w-full hover:bg-blue-700 transition duration-300">Submit</button>
+                <select className="mb-4 bg-gray-700 text-white" onChange={(e) => setStatus(e.target.value)}>
+                    <option value="">Select Status</option>
+                    <option value="available">Available</option>
+                    <option value="claimed">Claimed</option>
+                </select>
+                <button
+                    type="submit"
+                    className="bg-blue-500 text-white p-2 rounded"
+                >
+                    Submit
+                </button>
             </form>
         </div>
     );

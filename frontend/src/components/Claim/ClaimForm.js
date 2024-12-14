@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 const ClaimForm = () => {
-    const [itemId, setItemId] = useState('');
+    const [itemName, setitemName] = useState('');
     const [document, setDocument] = useState(null);
 
     const handleSubmit = (e) => {
@@ -15,9 +15,9 @@ const ClaimForm = () => {
                 <h2 className="text-2xl font-bold mb-4 text-white">Submit Claim</h2>
                 <input
                     type="text"
-                    placeholder="Item ID"
-                    value={itemId}
-                    onChange={(e) => setItemId(e.target.value)}
+                    placeholder="Item Name"
+                    value={itemName}
+                    onChange={(e) => setitemName(e.target.value)}
                     className="border p-2 mb-4 w-full bg-gray-700 text-white"
                     required
                 />

@@ -17,14 +17,17 @@ const app = express();
 
 // Middleware
 app.use(cors());
-app.use(express.json());
+app.use(express.json()); // Middleware to parse JSON requests
 
 // Routes
 const userRoutes = require('./routes/userRoutes');
 app.use('/api/users', userRoutes);
 
+const itemRoutes = require('./routes/itemRoutes');
+app.use('/api', itemRoutes);
+
 // Port configuration
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 8000;
 
 // Start server
 app.listen(port, () => {

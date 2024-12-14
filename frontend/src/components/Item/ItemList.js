@@ -1,11 +1,20 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { getItems } from '../../services/api'; 
 
 const ItemList = () => {
-    // Placeholder items
-    const items = [
-        { id: 1, name: 'Lost Wallet', category: 'Personal Item' },
-        { id: 2, name: 'Found Keys', category: 'Personal Item' },
-    ];
+    const [items, setItems] = useState([]);
+
+    useEffect(() => {
+        const fetchItems = async () => {
+            try {
+                const response = await getItems(); 
+                setItems(response);
+            } catch (error) {
+                console.error('Error fetching items:', error);
+            }
+        };
+        fetchItems();
+    }, []);
 
     return (
         <div className="p-8 bg-gray-900 text-white min-h-screen">
