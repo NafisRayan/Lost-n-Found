@@ -23,6 +23,7 @@ const ItemList = () => {
     const [searchKeyword, setSearchKeyword] = useState('');
     const [locationKeyword, setLocationKeyword] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('');
+    const [selectedStatus, setSelectedStatus] = useState('');
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
     const [filteredItems, setFilteredItems] = useState([]);
@@ -69,6 +70,10 @@ const ItemList = () => {
             results = results.filter(item => item.category === selectedCategory);
         }
 
+        if (selectedStatus) {
+            results = results.filter(item => item.status === selectedStatus);
+        }
+
         // Date filter: Convert startDate and endDate to YYYY-MM-DD format and filter accordingly
         const startDateValue = startDate ? new Date(startDate).toISOString().split('T')[0] : null;
         const endDateValue = endDate ? new Date(endDate).toISOString().split('T')[0] : null;
@@ -81,7 +86,7 @@ const ItemList = () => {
         });
 
         setFilteredItems(results);
-    }, [items, debouncedSearchKeyword, debouncedLocationKeyword, selectedCategory, startDate, endDate]);
+    }, [items, debouncedSearchKeyword, debouncedLocationKeyword, selectedCategory, selectedStatus, startDate, endDate]);
 
     // Trigger the filter whenever one of the filter inputs change
     useEffect(() => {
@@ -110,15 +115,14 @@ const ItemList = () => {
                 />
 
                 <select
-                    onChange={(e) => setSelectedCategory(e.target.value)}
-                    value={selectedCategory}
+                    onChange={(e) => setSelectedStatus(e.target.value)}
+                    value={selectedStatus}
                     className="p-2 rounded w-full sm:w-1/5"
                 >
-                    <option value="">Select Category</option>
-                    {/* Replace with dynamic category options */}
-                    <option value="12">Category 1</option>
-                    <option value="13">Category 2</option>
-                    <option value="33">Category 3</option>
+                    <option value="">Select Status</option>
+                    {/* Replace with dynamic status options */}
+                    <option value="available">Available</option>
+                    <option value="claimed">Claimed</option>
                 </select>
 
                 <input
@@ -139,10 +143,10 @@ const ItemList = () => {
                     <div className="p-4 transition duration-200">
                         <h3 className="text-lg font-semibold text-white-800">{item.name}</h3>
                         <p>Category: {item.category}</p>
-                        <p>Status: {item.status}</p>
                         <p>Username: {item.username}</p>
                         <p>Email: {item.email}</p>
                         <p>Location: {item.location}</p>
+                        <p>Status: {item.status}</p>
                         <p>Timestamp: {new Date(item.timestamp).toLocaleString()}</p>
                         <button className="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-200">Claim</button>
                     </div>

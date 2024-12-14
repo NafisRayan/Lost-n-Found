@@ -98,10 +98,8 @@ const ItemForm = () => {
                     onChange={handleImageChange}
                     className="mb-4"
                 />
-                <select className="mb-4 bg-gray-700 text-white" onChange={(e) => setStatus(e.target.value)}>
-                    <option value="">Select Status</option>
+                <select className="mb-4 bg-gray-700 text-white" onChange={(e) => setStatus(e.target.value)} defaultValue="available">
                     <option value="available">Available</option>
-                    <option value="claimed">Claimed</option>
                 </select>
                 <button
                     type="submit"
