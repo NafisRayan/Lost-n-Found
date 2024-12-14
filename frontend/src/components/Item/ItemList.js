@@ -44,10 +44,9 @@ const ItemList = () => {
     }, []);
 
     // Combined filter logic
-
     const filterItems = useCallback(() => {
         let results = items;
-    
+
         // Search filters
         if (debouncedSearchKeyword) {
             results = results.filter(item => {
@@ -57,33 +56,33 @@ const ItemList = () => {
                 return nameMatch || categoryMatch || locationMatch;
             });
         }
-    
+
         // Location filter
         if (debouncedLocationKeyword) {
             results = results.filter(item =>
                 item.location && item.location.toLowerCase().includes(debouncedLocationKeyword.toLowerCase())
             );
         }
-    
+
         // Category filter
         if (selectedCategory) {
             results = results.filter(item => item.category === selectedCategory);
         }
-    
-        // Date filter
-        const startDateValue = startDate ? new Date(startDate) : null;
-        const endDateValue = endDate ? new Date(endDate) : null;
-    
+
+        // Date filter: Convert startDate and endDate to YYYY-MM-DD format and filter accordingly
+        const startDateValue = startDate ? new Date(startDate).toISOString().split('T')[0] : null;
+        const endDateValue = endDate ? new Date(endDate).toISOString().split('T')[0] : null;
+
         results = results.filter(item => {
-            const itemDate = new Date(item.timestamp);
+            const itemDate = new Date(item.timestamp).toISOString().split('T')[0]; // Get YYYY-MM-DD part only
             if (startDateValue && itemDate < startDateValue) return false;
             if (endDateValue && itemDate > endDateValue) return false;
             return true;
         });
-    
+
         setFilteredItems(results);
     }, [items, debouncedSearchKeyword, debouncedLocationKeyword, selectedCategory, startDate, endDate]);
-    
+
     // Trigger the filter whenever one of the filter inputs change
     useEffect(() => {
         filterItems();
@@ -123,8 +122,11 @@ const ItemList = () => {
             
             <input
                 type="date"
-                value={endDate}
-                onChange={(e) => setEndDate(e.target.value)}
+                value={startDate}
+                onChange={(e) => {
+                    setStartDate(e.target.value);
+                    setEndDate(e.target.value);
+                }}
                 className="mb-4 p-2 rounded"
             />
 
