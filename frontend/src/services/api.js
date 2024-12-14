@@ -24,3 +24,13 @@ export const getUserProfile = async (token) => {
     });
     return response.data;
 };
+
+// User Logout
+export const logoutUser = async (token) => {
+    const response = await axios.post(`${API_URL}/logout`, {}, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    return response.data;
+};

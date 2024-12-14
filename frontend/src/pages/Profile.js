@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
-import { getUserProfile } from '../services/api';
+import { getUserProfile, logoutUser } from '../services/api';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
@@ -8,6 +8,18 @@ const Profile = () => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
+
+    const formatDate = (dateString) => {
+        if (!dateString) return 'Never';
+        const date = new Date(dateString);
+        return date.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+    };
 
     useEffect(() => {
         const fetchUserProfile = async () => {
@@ -27,12 +39,20 @@ const Profile = () => {
             }
         };
         fetchUserProfile();
-    }, []);
+    }, [navigate]);
 
-    const handleLogout = () => {
-        localStorage.removeItem('userToken');
-        toast.success('You have logged out successfully.');
-        navigate('/login');
+    const handleLogout = async () => {
+        try {
+            const token = localStorage.getItem('userToken');
+            if (token) {
+                await logoutUser(token);
+                localStorage.removeItem('userToken');
+                toast.success('You have logged out successfully.');
+                navigate('/login');
+            }
+        } catch (error) {
+            toast.error(error.response?.data?.message || 'Error logging out');
+        }
     };
 
     if (loading) return <div>Loading...</div>;
@@ -54,11 +74,14 @@ const Profile = () => {
                     <p>No user data available.</p>
                 )}
                 <h2 className="text-xl font-semibold mt-6">Activity Logs</h2>
-                <ul className="list-disc pl-5">
-                    <li>Logged in on 12/12/2024</li>
-                    <li>Reported a lost item on 12/11/2024</li>
+                <ul className="list-disc pl-5 mt-2">
+                    <li>Last Logged in on {formatDate(user?.lastLogin)}</li>
+                    <li>Last Logged out on {formatDate(user?.lastLogout)}</li>
                 </ul>
-                <button onClick={handleLogout} className="bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded mt-4 transition duration-300">
+                <button 
+                    onClick={handleLogout} 
+                    className="bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded mt-4 transition duration-300"
+                >
                     Logout
                 </button>
             </div>
