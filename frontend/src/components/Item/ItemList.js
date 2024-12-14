@@ -92,58 +92,63 @@ const ItemList = () => {
         <div className="p-8 bg-gray-900 text-white min-h-screen">
             <h2 className="text-3xl font-bold mb-4 text-center">Items</h2>
             
-            <input
-                type="text"
-                placeholder="Search by Name, Category, or Location..."
-                value={searchKeyword}
-                onChange={(e) => setSearchKeyword(e.target.value)}
-                className="mb-4 p-2 rounded"
-            />
-            
-            <input
-                type="text"
-                placeholder="Search by Location..."
-                value={locationKeyword}
-                onChange={(e) => setLocationKeyword(e.target.value)}
-                className="mb-4 p-2 rounded"
-            />
+            <div className="flex flex-wrap mb-8 gap-8">
+                <input
+                    type="text"
+                    placeholder="Search by Name, Category, or Location..."
+                    value={searchKeyword}
+                    onChange={(e) => setSearchKeyword(e.target.value)}
+                    className="p-2 rounded w-full sm:w-1/5"
+                />
 
-            <select
-                onChange={(e) => setSelectedCategory(e.target.value)}
-                value={selectedCategory}
-                className="mb-4 p-2 rounded"
-            >
-                <option value="">Select Category</option>
-                {/* Replace with dynamic category options */}
-                <option value="12">Category 1</option>
-                <option value="13">Category 2</option>
-                <option value="33">Category 3</option>
-            </select>
-            
-            <input
-                type="date"
-                value={startDate}
-                onChange={(e) => {
-                    setStartDate(e.target.value);
-                    setEndDate(e.target.value);
-                }}
-                className="mb-4 p-2 rounded"
-            />
+                <input
+                    type="text"
+                    placeholder="Search by Location..."
+                    value={locationKeyword}
+                    onChange={(e) => setLocationKeyword(e.target.value)}
+                    className="p-2 rounded w-full sm:w-1/5"
+                />
 
-            <ul>
-                {filteredItems.map(item => (
-                    <li key={item._id} className="border-b border-gray-600 py-4">
-                        <h3 className="text-xl font-semibold">{item.name}</h3>
-                        <p>Category: {item.category}</p>
-                        <p>Status: {item.status}</p>
-                        <p>Username: {item.username}</p>
-                        <p>Email: {item.email}</p>
-                        <p>Location: {item.location}</p>
-                        <p>Timestamp: {new Date(item.timestamp).toLocaleString()}</p>
-                        <img src={item.imageUrl} alt={item.name} className="w-32 h-32 object-cover" />
-                    </li>
-                ))}
-            </ul>
+                <select
+                    onChange={(e) => setSelectedCategory(e.target.value)}
+                    value={selectedCategory}
+                    className="p-2 rounded w-full sm:w-1/5"
+                >
+                    <option value="">Select Category</option>
+                    {/* Replace with dynamic category options */}
+                    <option value="12">Category 1</option>
+                    <option value="13">Category 2</option>
+                    <option value="33">Category 3</option>
+                </select>
+
+                <input
+                    type="date"
+                    value={startDate}
+                    onChange={(e) => {
+                        setStartDate(e.target.value);
+                        setEndDate(e.target.value);
+                    }}
+                    className="p-2 rounded w-full sm:w-1/5"
+                />
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 item-list">
+              {filteredItems.map(item => (
+                <div className="item-card" key={item._id}>
+                  <img src={item.imageUrl} alt={item.name} className="item-image" />
+                  <div className="item-details">
+                    <h3 className="item-title">{item.name}</h3>
+                    <p className="item-description">Category: {item.category}</p>
+                    <p className="item-description">Status: {item.status}</p>
+                    <p className="item-description">Username: {item.username}</p>
+                    <p className="item-description">Email: {item.email}</p>
+                    <p className="item-description">Location: {item.location}</p>
+                    <p className="item-description">Timestamp: {new Date(item.timestamp).toLocaleString()}</p>
+                    <button className="item-button">View Details</button>
+                  </div>
+                </div>
+              ))}
+            </div>
         </div>
     );
 };
