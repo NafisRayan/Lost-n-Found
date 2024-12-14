@@ -144,7 +144,7 @@ const ItemList = () => {
                         <p>Email: {item.email}</p>
                         <p>Location: {item.location}</p>
                         <p>Timestamp: {new Date(item.timestamp).toLocaleString()}</p>
-                        <button className="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-200">View Details</button>
+                        <button className="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-200">Claim</button>
                     </div>
                 </div>
               ))}
