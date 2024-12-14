@@ -5,9 +5,9 @@ const Item = require('../models/Item'); // Import the Item model
 // Create a new item
 router.post('/items', async (req, res) => {
     console.log('Request body:', req.body); // Log the incoming request body
-    const { name, category, imageUrl, status, username, email } = req.body;
+    const { name, category, imageUrl, status, username, email, location } = req.body;
     try {
-        const newItem = await Item.create({ name, category, imageUrl, status, username, email });
+        const newItem = await Item.create({ name, category, imageUrl, status, username, email, location });
         res.status(201).json(newItem);
     } catch (error) {
         console.error('Error saving item:', error); // Log the full error object for better debugging

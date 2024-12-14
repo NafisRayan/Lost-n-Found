@@ -8,6 +8,8 @@ const ItemForm = () => {
     const [status, setStatus] = useState('');
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
+    const [location, setLocation] = useState(''); // New state for location
+    
 
     useEffect(() => {
         const fetchUserProfile = async () => {
@@ -45,6 +47,7 @@ const ItemForm = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        console.log('Location:', location); // Log the location before submission
         const itemData = {
             name: itemName,
             category,
@@ -52,6 +55,7 @@ const ItemForm = () => {
             status,
             username,
             email,
+            location, // Include location in item data
         };
         console.log('Item Data:', itemData); // Log item data before submission
         addItem(itemData)
@@ -80,6 +84,13 @@ const ItemForm = () => {
                     placeholder="Category"
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
+                    className="mb-4 p-2 rounded bg-gray-700 text-white"
+                />
+                <input
+                    type="text"
+                    placeholder="Location"
+                    value={location}
+                    onChange={(e) => setLocation(e.target.value)}
                     className="mb-4 p-2 rounded bg-gray-700 text-white"
                 />
                 <input
