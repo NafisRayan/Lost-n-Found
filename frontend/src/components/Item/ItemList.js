@@ -115,9 +115,9 @@ const ItemList = () => {
             >
                 <option value="">Select Category</option>
                 {/* Replace with dynamic category options */}
-                <option value="category1">Category 1</option>
-                <option value="category2">Category 2</option>
-                <option value="category3">Category 3</option>
+                <option value="12">Category 1</option>
+                <option value="13">Category 2</option>
+                <option value="33">Category 3</option>
             </select>
             
             <input
