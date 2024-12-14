@@ -2,21 +2,20 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const Navbar = () => {
-    return (
-        <nav className="bg-blue-500 p-4">
-            <div className="container mx-auto">
-                <ul className="flex space-x-4">
-                    <li><Link to="/" className="text-white">Home</Link></li>
-                    <li><Link to="/profile" className="text-white">Profile</Link></li>
-                    <li><Link to="/add-item" className="text-white">Add Item</Link></li>
-                    <li><Link to="/submit-claim" className="text-white">Submit Claim</Link></li>
-                    <li><Link to="/items" className="text-white">View Items</Link></li>
-                    <li><Link to="/login" className="text-white">Login</Link></li>
-                    <li><Link to="/register" className="text-white">Register</Link></li>
-                </ul>
-            </div>
-        </nav>
-    );
+  return (
+    <nav className="bg-gray-950 p-4">
+      <div className="container mx-auto flex justify-between items-center">
+        <div className="text-white text-lg font-semibold">Lost-n-Found</div>
+        <div className="flex space-x-4">
+          <Link to="/" className="text-white hover:underline">Home</Link>
+          <Link to="/profile" className="text-white hover:underline">Profile</Link>
+          {/* <Link to="/items" className="text-white hover:underline">Items</Link> */}
+          <Link to="/login" className="text-white hover:underline">Login</Link>
+          <Link to="/register" className="text-white hover:underline">Register</Link>
+        </div>
+      </div>
+    </nav>
+  );
 };
 
 export default Navbar;

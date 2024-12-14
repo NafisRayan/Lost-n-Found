@@ -70,7 +70,7 @@ const Profile = () => {
     if (loading) return <div>Loading...</div>;
 
     return (
-        <div className="bg-gray-900 text-white min-h-screen">
+        <div className="bg-black text-white min-h-screen">
             <div className="p-8">
                 <h1 className="text-3xl font-bold mb-4">User Profile</h1>
                 {user ? (
@@ -78,14 +78,27 @@ const Profile = () => {
                         <h2 className="text-xl font-semibold">Profile Information</h2>
                         <p>Name: {user.name}</p>
                         <p>Email: {user.email}</p>
-                        {/* <button className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded mt-4 transition duration-300">
-                            Edit Profile
-                        </button> */}
+                        
                         <h2 className="text-xl font-semibold mt-6">Activity Logs</h2>
-                <ul className="list-disc pl-5 mt-2">
-                    <li>Last Logged in on {formatDate(user?.lastLogin)}</li>
-                    <li>Last Logged out on {formatDate(user?.lastLogout)}</li>
-                </ul>
+                        <ul className="list-disc pl-5 mt-2">
+                            <li>Last Logged in on {formatDate(user?.lastLogin)}</li>
+                            <li>Last Logged out on {formatDate(user?.lastLogout)}</li>
+                        </ul>
+
+                        <div className="profile-buttons mb-4 mt-6">
+                            <button 
+                                onClick={() => navigate('/add-item')}
+                                className="bg-blue-500 text-white p-2 rounded mr-4"
+                            >
+                                Add Item
+                            </button>
+                            <button 
+                                onClick={() => navigate('/submit-claim')}
+                                className="bg-green-500 text-white p-2 rounded"
+                            >
+                                Submit Claim
+                            </button>
+                        </div>
                     </div>
                 ) : (
                     <p>No user data available.</p>

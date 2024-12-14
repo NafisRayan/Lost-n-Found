@@ -89,61 +89,66 @@ const ItemList = () => {
     }, [filterItems]);
 
     return (
-        <div className="p-8 bg-gray-900 text-white min-h-screen">
-            <h2 className="text-3xl font-bold mb-4 text-center">Items</h2>
+        <div className="p-8 bg-black-900 text-white min-h-screen">
+            {/* <h2 className="text-3xl font-bold mb-4 text-center">Items</h2> */}
             
-            <input
-                type="text"
-                placeholder="Search by Name, Category, or Location..."
-                value={searchKeyword}
-                onChange={(e) => setSearchKeyword(e.target.value)}
-                className="mb-4 p-2 rounded"
-            />
-            
-            <input
-                type="text"
-                placeholder="Search by Location..."
-                value={locationKeyword}
-                onChange={(e) => setLocationKeyword(e.target.value)}
-                className="mb-4 p-2 rounded"
-            />
+            <div className="flex flex-wrap mb-8 gap-8 text-black">
+                <input
+                    type="text"
+                    placeholder="Search by Name, Category, or Location..."
+                    value={searchKeyword}
+                    onChange={(e) => setSearchKeyword(e.target.value)}
+                    className="p-2 rounded w-full sm:w-1/5"
+                />
 
-            <select
-                onChange={(e) => setSelectedCategory(e.target.value)}
-                value={selectedCategory}
-                className="mb-4 p-2 rounded"
-            >
-                <option value="">Select Category</option>
-                {/* Replace with dynamic category options */}
-                <option value="12">Category 1</option>
-                <option value="13">Category 2</option>
-                <option value="33">Category 3</option>
-            </select>
-            
-            <input
-                type="date"
-                value={startDate}
-                onChange={(e) => {
-                    setStartDate(e.target.value);
-                    setEndDate(e.target.value);
-                }}
-                className="mb-4 p-2 rounded"
-            />
+                <input
+                    type="text"
+                    placeholder="Search by Location..."
+                    value={locationKeyword}
+                    onChange={(e) => setLocationKeyword(e.target.value)}
+                    className="p-2 rounded w-full sm:w-1/5"
+                />
 
-            <ul>
-                {filteredItems.map(item => (
-                    <li key={item._id} className="border-b border-gray-600 py-4">
-                        <h3 className="text-xl font-semibold">{item.name}</h3>
+                <select
+                    onChange={(e) => setSelectedCategory(e.target.value)}
+                    value={selectedCategory}
+                    className="p-2 rounded w-full sm:w-1/5"
+                >
+                    <option value="">Select Category</option>
+                    {/* Replace with dynamic category options */}
+                    <option value="12">Category 1</option>
+                    <option value="13">Category 2</option>
+                    <option value="33">Category 3</option>
+                </select>
+
+                <input
+                    type="date"
+                    value={startDate}
+                    onChange={(e) => {
+                        setStartDate(e.target.value);
+                        setEndDate(e.target.value);
+                    }}
+                    className="p-2 rounded w-full sm:w-1/5"
+                />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredItems.map((item) => (
+                <div key={item._id} className="bg-black rounded-lg shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-105 hover:shadow-lg hover:z-10">
+                    <img src={item.imageUrl} alt={item.name} className="w-full h-48 object-cover transition duration-200 hover:scale-110" />
+                    <div className="p-4 transition duration-200">
+                        <h3 className="text-lg font-semibold text-white-800">{item.name}</h3>
                         <p>Category: {item.category}</p>
                         <p>Status: {item.status}</p>
                         <p>Username: {item.username}</p>
                         <p>Email: {item.email}</p>
                         <p>Location: {item.location}</p>
                         <p>Timestamp: {new Date(item.timestamp).toLocaleString()}</p>
-                        <img src={item.imageUrl} alt={item.name} className="w-32 h-32 object-cover" />
-                    </li>
-                ))}
-            </ul>
+                        <button className="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-200">Claim</button>
+                    </div>
+                </div>
+              ))}
+            </div>
         </div>
     );
 };
