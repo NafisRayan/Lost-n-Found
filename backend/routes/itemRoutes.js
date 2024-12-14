@@ -7,13 +7,13 @@ let items = []; // In-memory storage for items
 // Create a new item
 router.post('/items', async (req, res) => {
     console.log('Request body:', req.body); // Log the incoming request body
-    const { name, category, imageUrl, status } = req.body;
+    const { name, category, imageUrl, status, username, email } = req.body;
     try {
-        const newItem = await Item.create({ name, category, imageUrl, status });
+        const newItem = await Item.create({ name, category, imageUrl, status, username, email });
         res.status(201).json(newItem);
     } catch (error) {
-        console.error('Error saving item:', error);
-        res.status(500).json({ message: 'Error saving item' });
+        console.error('Error saving item:', error); // Log the full error object for better debugging
+        res.status(500).json({ message: 'Error saving item', error: error.message });
     }
 });
 

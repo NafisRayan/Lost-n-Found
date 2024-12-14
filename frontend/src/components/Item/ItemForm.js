@@ -1,40 +1,66 @@
-import React, { useState } from 'react';
-import { addItem } from '../../services/api'; // Import the addItem function
+import React, { useState, useEffect } from 'react';
+import { addItem, getUserProfile } from '../../services/api'; // Import the functions
 
 const ItemForm = () => {
     const [itemName, setItemName] = useState('');
     const [category, setCategory] = useState('');
     const [image, setImage] = useState(null);
     const [status, setStatus] = useState('');
+    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // Handle item submission logic here
-        const itemData = {
-            name: itemName,
-            category,
-            image,
-            status
+    useEffect(() => {
+        const fetchUserProfile = async () => {
+            const token = localStorage.getItem('userToken'); // Fetch token
+            console.log('Token:', token); // Log the token
+            if (token) {
+                try {
+                    const profile = await getUserProfile(token);
+                    console.log('Profile Data:', profile); // Log the profile data
+                    setUsername(profile.name);
+                    setEmail(profile.email);
+                } catch (error) {
+                    console.error('Error fetching user profile:', error);
+                }
+            }
         };
-        addItem(itemData)
-            .then((data) => {
-                console.log('Item added:', data);
-                // Optionally reset form fields or show success message
-            })
-            .catch((error) => {
-                console.error('Error adding item:', error);
-            });
-    };
+        fetchUserProfile();
+    }, []);
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
+            // Check the file size (limit to 2MB for example)
+            if (file.size > 2 * 1024 * 1024) {
+                alert('File size exceeds 2MB');
+                return;
+            }
             const reader = new FileReader();
             reader.onloadend = () => {
                 setImage(reader.result); // Set the base64 string
             };
             reader.readAsDataURL(file); // Convert to base64
         }
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const itemData = {
+            name: itemName,
+            category,
+            imageUrl: image,
+            status,
+            username,
+            email,
+        };
+        console.log('Item Data:', itemData); // Log item data before submission
+        addItem(itemData)
+            .then((data) => {
+                console.log('Item added:', data);
+            })
+            .catch((error) => {
+                console.error('Error adding item:', error);
+            });
     };
 
     return (
