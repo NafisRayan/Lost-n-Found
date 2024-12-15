@@ -53,6 +53,21 @@ const Profile = () => {
         fetchUserProfile();
     }, [navigate]);
 
+    useEffect(() => {
+        console.log('Current user state:', user);
+        if (user && isAdmin(user)) {
+            console.log('User data:', user);
+            console.log('User is an admin');
+            const userData = { name: user.name, email: user.email };
+            localStorage.setItem('user', JSON.stringify(userData));
+        } else if (user) {
+            console.log('User data:', user);
+            console.log('User is not an admin');
+            const userData = { name: user.name, email: user.email };
+            localStorage.setItem('user', JSON.stringify(userData));
+        }
+    }, [user]);
+
     const handleLogout = async () => {
         try {
             const token = localStorage.getItem('userToken');
@@ -74,12 +89,6 @@ const Profile = () => {
     };
 
     if (loading) return <div>Loading...</div>;
-
-    if (user && isAdmin(user)) {
-        console.log('User is an admin');
-    } else {
-        console.log('User is not an admin');
-    }
 
     return (
         <div className="bg-black text-white min-h-screen">
@@ -123,8 +132,6 @@ const Profile = () => {
                 ) : (
                     <p>No user data available.</p>
                 )}
-                
-                {/* <ItemList user={user} /> */}
                 <button 
                     onClick={handleLogout} 
                     className="bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded mt-4 transition duration-300"

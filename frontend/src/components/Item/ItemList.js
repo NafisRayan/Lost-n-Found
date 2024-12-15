@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { getItems } from '../../services/api';
+import adminData from '../../admin.json';
 
 // Debounce utility function to optimize search input
 const useDebounce = (value, delay) => {
@@ -18,17 +19,12 @@ const useDebounce = (value, delay) => {
     return debouncedValue;
 };
 
-const adminData = [
-    { name: 'Admin1', email: 'admin1@example.com' },
-    { name: 'Admin2', email: 'admin2@example.com' },
-];
-
-const ItemList = ({ user }) => {
+const ItemList = () => {
     const isAdmin = (user) => {
         if (!user) return false; // Check if user is defined
         return adminData.some(admin => admin.name === user.name && admin.email === user.email);
     };
-    console.log('Is Admin:', isAdmin(user));
+
     const [items, setItems] = useState([]);
     const [searchKeyword, setSearchKeyword] = useState('');
     const [locationKeyword, setLocationKeyword] = useState('');
@@ -37,10 +33,18 @@ const ItemList = ({ user }) => {
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
     const [filteredItems, setFilteredItems] = useState([]);
+    const [user, setUser] = useState(null);
+
     const debouncedSearchKeyword = useDebounce(searchKeyword, 500); // Use debounced value
     const debouncedLocationKeyword = useDebounce(locationKeyword, 500); // Debounce location input
 
-    // Fetch items on mount
+    useEffect(() => {
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (user) {
+            setUser(user);
+        }
+    }, []);
+
     useEffect(() => {
         const fetchItems = async () => {
             try {
@@ -102,6 +106,8 @@ const ItemList = ({ user }) => {
     useEffect(() => {
         filterItems();
     }, [filterItems]);
+
+    console.log('Is Admin:', isAdmin(user), adminData, user);
 
     return (
         <div className="p-8 bg-black-900 text-white min-h-screen">
