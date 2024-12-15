@@ -45,26 +45,32 @@ const ItemForm = () => {
         }
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log('Location:', location); // Log the location before submission
-        const itemData = {
-            name: itemName,
-            category,
-            imageUrl: image,
-            status,
-            username,
-            email,
-            location, // Include location in item data
-        };
-        console.log('Item Data:', itemData); // Log item data before submission
-        addItem(itemData)
-            .then((data) => {
-                console.log('Item added:', data);
-            })
-            .catch((error) => {
-                console.error('Error adding item:', error);
-            });
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        try {
+            console.log('Location:', location); // Log the location before submission
+            const itemData = {
+                name: itemName,
+                category,
+                imageUrl: image,
+                status,
+                username,
+                email,
+                location, // Include location in item data
+            };
+            console.log('Item Data:', itemData); // Log item data before submission
+            await addItem(itemData)
+                .then((data) => {
+                    console.log('Item added:', data);
+                })
+                .catch((error) => {
+                    console.error('Error adding item:', error);
+                    throw error;
+                });
+            alert('Submission successful!'); // Notification for success
+        } catch (error) {
+            alert('Submission unsuccessful: ' + error.message); // Notification for error
+        }
     };
 
     return (
