@@ -3,6 +3,8 @@ import Navbar from '../components/Navbar';
 import { getUserProfile, logoutUser } from '../services/api';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import adminData from '../admin.json';
+import ItemList from '../components/Item/ItemList'; // Import the ItemList component
 
 const Profile = () => {
     const [user, setUser] = useState(null);
@@ -20,6 +22,10 @@ const Profile = () => {
             minute: '2-digit',
             hour12: true
         });
+    };
+
+    const isAdmin = (user) => {
+        return adminData.some(admin => admin.name === user.name && admin.email === user.email);
     };
 
     const fetchUserProfile = async () => {
@@ -47,6 +53,21 @@ const Profile = () => {
         fetchUserProfile();
     }, [navigate]);
 
+    useEffect(() => {
+        console.log('Current user state:', user);
+        if (user && isAdmin(user)) {
+            console.log('User data:', user);
+            console.log('User is an admin');
+            const userData = { name: user.name, email: user.email };
+            localStorage.setItem('user', JSON.stringify(userData));
+        } else if (user) {
+            console.log('User data:', user);
+            console.log('User is not an admin');
+            const userData = { name: user.name, email: user.email };
+            localStorage.setItem('user', JSON.stringify(userData));
+        }
+    }, [user]);
+
     const handleLogout = async () => {
         try {
             const token = localStorage.getItem('userToken');
@@ -72,7 +93,15 @@ const Profile = () => {
     return (
         <div className="bg-black text-white min-h-screen">
             <div className="p-8">
-                <h1 className="text-3xl font-bold mb-4">User Profile</h1>
+                {user ? (
+                    isAdmin(user) ? (
+                        <h1 className="text-3xl font-bold mb-4">Admin Profile</h1>
+                    ) : (
+                        <h1 className="text-3xl font-bold mb-4">User Profile</h1>
+                    )
+                ) : (
+                    <h1 className="text-3xl font-bold mb-4">User Profile</h1>
+                )}
                 {user ? (
                     <div className="border rounded-lg p-4 bg-gray-800">
                         <h2 className="text-xl font-semibold">Profile Information</h2>
@@ -103,7 +132,6 @@ const Profile = () => {
                 ) : (
                     <p>No user data available.</p>
                 )}
-                
                 <button 
                     onClick={handleLogout} 
                     className="bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded mt-4 transition duration-300"

@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { getItems } from '../../services/api';
+import adminData from '../../admin.json';
 
 // Debounce utility function to optimize search input
 const useDebounce = (value, delay) => {
@@ -19,6 +20,11 @@ const useDebounce = (value, delay) => {
 };
 
 const ItemList = () => {
+    const isAdmin = (user) => {
+        if (!user) return false; // Check if user is defined
+        return adminData.some(admin => admin.name === user.name && admin.email === user.email);
+    };
+
     const [items, setItems] = useState([]);
     const [searchKeyword, setSearchKeyword] = useState('');
     const [locationKeyword, setLocationKeyword] = useState('');
@@ -27,10 +33,18 @@ const ItemList = () => {
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
     const [filteredItems, setFilteredItems] = useState([]);
+    const [user, setUser] = useState(null);
+
     const debouncedSearchKeyword = useDebounce(searchKeyword, 500); // Use debounced value
     const debouncedLocationKeyword = useDebounce(locationKeyword, 500); // Debounce location input
 
-    // Fetch items on mount
+    useEffect(() => {
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (user) {
+            setUser(user);
+        }
+    }, []);
+
     useEffect(() => {
         const fetchItems = async () => {
             try {
@@ -93,6 +107,8 @@ const ItemList = () => {
         filterItems();
     }, [filterItems]);
 
+    console.log('Is Admin:', isAdmin(user), adminData, user);
+
     return (
         <div className="p-8 bg-black-900 text-white min-h-screen">
             {/* <h2 className="text-3xl font-bold mb-4 text-center">Items</h2> */}
@@ -148,7 +164,7 @@ const ItemList = () => {
                         <p>Location: {item.location}</p>
                         <p>Status: {item.status}</p>
                         <p>Timestamp: {new Date(item.timestamp).toLocaleString()}</p>
-                        <button className="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-200">Claim</button>
+                        {isAdmin(user) && <button className="mt-4 bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition duration-200">Delete</button>}
                     </div>
                 </div>
               ))}
