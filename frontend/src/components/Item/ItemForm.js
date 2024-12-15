@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { addItem, getUserProfile } from '../../services/api'; // Import the functions
+import { toast } from 'react-toastify';
 
 const ItemForm = () => {
     const [itemName, setItemName] = useState('');
@@ -34,7 +35,7 @@ const ItemForm = () => {
         if (file) {
             // Check the file size (limit to 2MB for example)
             if (file.size > 2 * 1024 * 1024) {
-                alert('File size exceeds 2MB');
+                toast.error('File size exceeds 2MB');
                 return;
             }
             const reader = new FileReader();
@@ -67,9 +68,9 @@ const ItemForm = () => {
                     console.error('Error adding item:', error);
                     throw error;
                 });
-            alert('Submission successful!'); // Notification for success
+            toast.success('Submission successful!'); // Notification for success
         } catch (error) {
-            alert('Submission unsuccessful: ' + error.message); // Notification for error
+            toast.error('Submission unsuccessful: ' + error.message); // Notification for error
         }
     };
 
