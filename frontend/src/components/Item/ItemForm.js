@@ -5,7 +5,7 @@ const ItemForm = () => {
     const [itemName, setItemName] = useState('');
     const [category, setCategory] = useState('');
     const [image, setImage] = useState(null);
-    const [status, setStatus] = useState('');
+    const [status, setStatus] = useState('available'); // Initialize status state
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [location, setLocation] = useState(''); // New state for location
@@ -98,7 +98,7 @@ const ItemForm = () => {
                     onChange={handleImageChange}
                     className="mb-4"
                 />
-                <select className="mb-4 bg-gray-700 text-white" onChange={(e) => setStatus(e.target.value)} defaultValue="available">
+                <select className="mb-4 bg-gray-700 text-white" onChange={(e) => setStatus(e.target.value)} value={status}>
                     <option value="available">Available</option>
                 </select>
                 <button
