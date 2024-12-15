@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { addItem, getUserProfile } from '../../services/api'; // Import the functions
+import { toast } from 'react-toastify';
 
 const ItemForm = () => {
     const [itemName, setItemName] = useState('');
@@ -34,7 +35,7 @@ const ItemForm = () => {
         if (file) {
             // Check the file size (limit to 2MB for example)
             if (file.size > 2 * 1024 * 1024) {
-                alert('File size exceeds 2MB');
+                toast.error('File size exceeds 2MB');
                 return;
             }
             const reader = new FileReader();
@@ -45,26 +46,32 @@ const ItemForm = () => {
         }
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log('Location:', location); // Log the location before submission
-        const itemData = {
-            name: itemName,
-            category,
-            imageUrl: image,
-            status,
-            username,
-            email,
-            location, // Include location in item data
-        };
-        console.log('Item Data:', itemData); // Log item data before submission
-        addItem(itemData)
-            .then((data) => {
-                console.log('Item added:', data);
-            })
-            .catch((error) => {
-                console.error('Error adding item:', error);
-            });
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        try {
+            console.log('Location:', location); // Log the location before submission
+            const itemData = {
+                name: itemName,
+                category,
+                imageUrl: image,
+                status,
+                username,
+                email,
+                location, // Include location in item data
+            };
+            console.log('Item Data:', itemData); // Log item data before submission
+            await addItem(itemData)
+                .then((data) => {
+                    console.log('Item added:', data);
+                })
+                .catch((error) => {
+                    console.error('Error adding item:', error);
+                    throw error;
+                });
+            toast.success('Submission successful!'); // Notification for success
+        } catch (error) {
+            toast.error('Submission unsuccessful: ' + error.message); // Notification for error
+        }
     };
 
     return (
