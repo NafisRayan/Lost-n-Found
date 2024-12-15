@@ -42,7 +42,7 @@ const Login = () => {
                 />
                 <button type="submit" className="bg-blue-600 text-white p-2 rounded w-full hover:bg-blue-700 transition duration-300">Login</button>
                 <p className="mt-4 text-center text-white">
-                    <a href="#" className="text-blue-500">Forgot Password?</a>
+                    <a href="/register" className="text-blue-500">Don't have an account?</a>
                 </p>
             </form>
         </div>
