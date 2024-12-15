@@ -107,6 +107,21 @@ const ItemList = () => {
         filterItems();
     }, [filterItems]);
 
+    const deleteItem = async (id) => {
+        try {
+            const response = await fetch(`http://localhost:8000/api/items/${id}`, {
+                method: 'DELETE',
+            });
+            if (!response.ok) {
+                throw new Error('Failed to delete the item');
+            }
+            // Optionally, you can refresh the items or remove the item from the state
+            setItems((prevItems) => prevItems.filter((item) => item._id !== id));
+        } catch (error) {
+            console.error('Error deleting item:', error);
+        }
+    };
+
     console.log('Is Admin:', isAdmin(user), adminData, user);
 
     return (
@@ -164,7 +179,14 @@ const ItemList = () => {
                         <p>Location: {item.location}</p>
                         <p>Status: {item.status}</p>
                         <p>Timestamp: {new Date(item.timestamp).toLocaleString()}</p>
-                        {isAdmin(user) && <button className="mt-4 bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition duration-200">Delete</button>}
+                        {isAdmin(user) && (
+                            <button
+                                className="mt-4 bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition duration-200"
+                                onClick={() => deleteItem(item._id)}
+                            >
+                                Delete
+                            </button>
+                        )}
                     </div>
                 </div>
               ))}
