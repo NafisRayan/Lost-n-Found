@@ -4,6 +4,7 @@ import { getUserProfile, logoutUser } from '../services/api';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import adminData from '../admin.json';
+import ItemList from '../components/Item/ItemList'; // Import the ItemList component
 
 const Profile = () => {
     const [user, setUser] = useState(null);
@@ -123,6 +124,7 @@ const Profile = () => {
                     <p>No user data available.</p>
                 )}
                 
+                {/* <ItemList user={user} /> */}
                 <button 
                     onClick={handleLogout} 
                     className="bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded mt-4 transition duration-300"

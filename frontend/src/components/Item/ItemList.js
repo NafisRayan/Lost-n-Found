@@ -18,7 +18,17 @@ const useDebounce = (value, delay) => {
     return debouncedValue;
 };
 
-const ItemList = () => {
+const adminData = [
+    { name: 'Admin1', email: 'admin1@example.com' },
+    { name: 'Admin2', email: 'admin2@example.com' },
+];
+
+const ItemList = ({ user }) => {
+    const isAdmin = (user) => {
+        if (!user) return false; // Check if user is defined
+        return adminData.some(admin => admin.name === user.name && admin.email === user.email);
+    };
+    console.log('Is Admin:', isAdmin(user));
     const [items, setItems] = useState([]);
     const [searchKeyword, setSearchKeyword] = useState('');
     const [locationKeyword, setLocationKeyword] = useState('');
@@ -148,7 +158,7 @@ const ItemList = () => {
                         <p>Location: {item.location}</p>
                         <p>Status: {item.status}</p>
                         <p>Timestamp: {new Date(item.timestamp).toLocaleString()}</p>
-                        <button className="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-200">Claim</button>
+                        {isAdmin(user) && <button className="mt-4 bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition duration-200">Delete</button>}
                     </div>
                 </div>
               ))}
