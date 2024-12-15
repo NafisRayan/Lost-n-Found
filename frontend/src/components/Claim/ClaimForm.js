@@ -93,9 +93,9 @@ const ClaimForm = () => {
                     onChange={handleImageChange}
                     className="mb-4"
                 />
-                <select className="mb-4 bg-gray-700 text-white" onChange={(e) => setStatus(e.target.value)} defaultValue="claimed">
+                {/* <select className="mb-4 bg-gray-700 text-white" onChange={(e) => setStatus(e.target.value)} defaultValue="claimed">
                     <option value="claimed">Claimed</option>
-                </select>
+                </select> */}
                 <button
                     type="submit"
                     className="bg-blue-500 text-white p-2 rounded"
